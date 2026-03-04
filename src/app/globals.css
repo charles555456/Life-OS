@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+:root {
+  /* Life OS — Dark atmospheric palette */
+  --bg-primary: #0C0C0F;
+  --bg-secondary: #141418;
+  --bg-card: #1A1A21;
+  --bg-card-hover: #22222B;
+  --bg-elevated: #252530;
+
+  /* Accent colors */
+  --accent-amber: #F0A830;
+  --accent-amber-soft: rgba(240, 168, 48, 0.15);
+  --accent-emerald: #34D399;
+  --accent-emerald-soft: rgba(52, 211, 153, 0.12);
+  --accent-rose: #F471B5;
+  --accent-rose-soft: rgba(244, 113, 181, 0.12);
+  --accent-sky: #38BDF8;
+  --accent-sky-soft: rgba(56, 189, 248, 0.12);
+
+  /* Text */
+  --text-primary: #F0F0F3;
+  --text-secondary: #9B9BA8;
+  --text-muted: #5E5E6E;
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.1);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-card-hover: var(--bg-card-hover);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-accent-amber: var(--accent-amber);
+  --color-accent-amber-soft: var(--accent-amber-soft);
+  --color-accent-emerald: var(--accent-emerald);
+  --color-accent-emerald-soft: var(--accent-emerald-soft);
+  --color-accent-rose: var(--accent-rose);
+  --color-accent-rose-soft: var(--accent-rose-soft);
+  --color-accent-sky: var(--accent-sky);
+  --color-accent-sky-soft: var(--accent-sky-soft);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-medium: var(--border-medium);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "Nunito", "Nunito Sans", "SF Pro Display", -apple-system, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: var(--radius-full);
+}
+
+/* PWA safe areas */
+.safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 16px);
+}
+
+.safe-top {
+  padding-top: max(env(safe-area-inset-top), 16px);
+}
+
+/* Smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Card glow effect */
+.card-glow {
+  position: relative;
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(240, 168, 48, 0.08) 0%,
+    transparent 50%,
+    rgba(52, 211, 153, 0.05) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Number display for stats */
+.stat-number {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Meditation pulse animation */
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+}
