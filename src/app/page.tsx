@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Wind, Dumbbell, Moon, Heart, Coffee, ListChecks, Target, ChevronRight, Leaf, Briefcase } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Wind, Dumbbell, Moon, Heart, Coffee, ListChecks, Target, ChevronRight, Leaf, Briefcase, Pencil } from "lucide-react";
 import Link from "next/link";
 import { db, today, weekStart } from "@/lib/db";
+import { useAuthStore } from "@/stores/authStore";
 import type { DailyLog, MeditationSession, Task, Goal } from "@/types";
 
 interface DashboardData {
@@ -140,10 +141,24 @@ async function loadDashboard(): Promise<DashboardData> {
 
 export default function Dashboard() {
   const [data, setData] = useState<DashboardData | null>(null);
+  const { displayName, setDisplayName } = useAuthStore();
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const nameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadDashboard().then(setData);
   }, []);
+
+  useEffect(() => {
+    if (editingName && nameRef.current) nameRef.current.focus();
+  }, [editingName]);
+
+  const saveName = () => {
+    const trimmed = nameInput.trim();
+    if (trimmed) setDisplayName(trimmed);
+    setEditingName(false);
+  };
 
   const now = new Date();
   const hour = now.getHours();
@@ -173,7 +188,27 @@ export default function Dashboard() {
     <div className="px-5 pt-4">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">{greeting}，Charles</h1>
+        {editingName ? (
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold">{greeting}，</span>
+            <input
+              ref={nameRef}
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              onBlur={saveName}
+              onKeyDown={(e) => e.key === "Enter" && saveName()}
+              className="text-2xl font-bold bg-bg-elevated border border-accent-amber rounded-lg px-2 py-0.5 w-32 focus:outline-none"
+            />
+          </div>
+        ) : (
+          <h1
+            className="text-2xl font-bold tracking-tight flex items-center gap-2"
+            onClick={() => { setNameInput(displayName || ""); setEditingName(true); }}
+          >
+            {greeting}，{displayName || "點此設定名字"}
+            <Pencil size={14} className="text-text-muted" />
+          </h1>
+        )}
         <p className="text-sm text-text-secondary mt-0.5">{dateStr}</p>
       </div>
 
