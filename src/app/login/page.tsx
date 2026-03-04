@@ -6,6 +6,7 @@ import { pullFromCloud } from "@/lib/sync";
 
 export default function LoginPage() {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +20,7 @@ export default function LoginPage() {
     setLoading(true);
 
     if (isSignUp) {
-      const err = await signUp(email, password);
+      const err = await signUp(email, password, name);
       if (err) {
         setError(err);
       } else {
@@ -67,6 +68,18 @@ export default function LoginPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto">
+        {isSignUp && (
+          <div>
+            <label className="text-xs text-text-secondary block mb-1.5">名字</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl bg-bg-elevated border border-border-subtle text-text-primary text-sm focus:outline-none focus:border-accent-amber"
+              placeholder="你的名字"
+            />
+          </div>
+        )}
         <div>
           <label className="text-xs text-text-secondary block mb-1.5">Email</label>
           <input
